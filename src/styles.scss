@@ -1,18 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/scss/bootstrap';
 
-// .container {
-  // max-width: 900px;
-  // margin: 20px auto;
-  // border: 2px solid black;
-// }
-// 
-// input {
-  // width: 100%;
-// }
+.close {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
 
-// .invalid {
-  // input {
-    // border: 2px solid red;
-  // }
-// }
+.edit {
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}

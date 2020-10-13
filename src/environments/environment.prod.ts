@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  fbDbUrl: 'https://taskmanager-bdc33.firebaseio.com/'
 };

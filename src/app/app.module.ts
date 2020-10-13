@@ -8,7 +8,8 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { TaskPageComponent } from './task-page/task-page.component';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { QuillModule } from 'ngx-quill';
+import { HttpClientModule } from '@angular/common/http';
+import { PostsSearch } from './shared/search.pipe';
 
 @NgModule({
   declarations: [
@@ -16,13 +17,15 @@ import { QuillModule } from 'ngx-quill';
     MainLayoutComponent,
     HomePageComponent,
     TaskPageComponent,
-    CreateTaskComponent
+    CreateTaskComponent,
+    PostsSearch
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

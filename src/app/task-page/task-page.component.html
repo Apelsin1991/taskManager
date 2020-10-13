@@ -1,1 +1,29 @@
-<p>task-page works!</p>
+<div class="container" *ngIf="post$ | async as task; else loading">
+
+  <div class="card">
+    <p class="close" (click)="remove(task.id)">&#x2718;</p>
+    <div class="card-header">
+      {{task.title}}
+    </div>
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p>{{ task.text }}</p>
+        <footer class="blockquote-footer">Необходимо выполнить до <cite title="Source Title">{{task.date}}</cite>
+        </footer>
+      </blockquote>
+      <div class="buttons">
+        <a href="#" class="btn btn-primary" [routerLink]="['']">Назад</a>
+        <a href="#" class="btn btn-success" [routerLink]="['task', task.id]">Завершить</a>
+      </div>
+    </div>
+    <p class="edit" data-toggle="tooltip" 
+    data-placement="bottom" title="Редактировать"
+    
+    
+    >&#9998;</p>
+  </div>
+
+</div>
+<ng-template #loading>
+  <p>Загрузка</p>
+</ng-template>

@@ -1,4 +1,32 @@
+input {
+    width: 500px;
+}
+
+.btn {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.form-control {
+    text-align: center;
+}
+
+#datePlace {
+    position: absolute;
+    top: 0;
+    left: 4px;
+    font-size: .8rem;
+}
+
 .card {
     display: inline-block;
-    margin: 20px auto;
+    margin: 10px;
+    text-align: center;
 }
+
+
+
+
+
+
+
