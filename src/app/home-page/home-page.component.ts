@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Task } from '../shared/interface';
@@ -14,6 +15,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
   tSub: Subscription
   rSub: Subscription
   search = ''
+
+  drop(event: CdkDragDrop<Task[]>) {
+    moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
+    }
+  
 
   constructor(private taskService: TaskService) { }
 

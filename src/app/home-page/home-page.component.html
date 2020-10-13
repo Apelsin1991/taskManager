@@ -3,9 +3,9 @@
     <div class="form-control">
       <input type="text" placeholder="Найти пост..." [(ngModel)]='search'>
     </div>
-
-    <div class="card" style="width: 25rem;" *ngFor='let task of tasks | postsSearch: search; let idx = index '>
-
+<div cdkDropList (cdkDragDropped)='drop($event)'>
+    <div cdkDropList class="card" style="width: 25rem;"
+      *ngFor='let task of tasks | postsSearch: search; let idx = index' cdkDrag>
       <p id="datePlace">{{ task.date | date: 'medium': 'ru'}}</p>
       <p class="close" (click)="remove(task.id)">&#x2718;</p>
       <div class="card-body">
@@ -16,8 +16,9 @@
       </div>
       <p class="edit" data-toggle="tooltip" data-placement="bottom" title="Редактировать"
         [routerLink]="['/create', task.id]">&#9998;</p>
-
     </div>
+
+  </div>
 
   </div>
 
