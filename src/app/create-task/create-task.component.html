@@ -24,7 +24,10 @@
           <input type="date" formControlName="date">
         </div>
 
-        <button class="btn btn-secondary" type="submit" [disabled]="form.invalid">Отправить</button>
+        <button *ngIf="!edit; else changeButton" class="btn btn-secondary" type="submit" [disabled]="form.invalid">Отправить</button>
+        <ng-template #changeButton>
+          <button type="submit" class="btn btn-warning" [disabled]="form.invalid">Изменить</button>
+        </ng-template>
 
       </div>
 

@@ -12,6 +12,7 @@ const routes: Routes = [
       {path: '', component: HomePageComponent},
       {path: 'task/:id', component: TaskPageComponent},
       {path: 'create', component: CreateTaskComponent},
+      {path: 'create/:id', component: CreateTaskComponent},
     ]
   }
 ];

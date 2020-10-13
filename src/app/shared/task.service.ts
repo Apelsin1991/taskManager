@@ -57,4 +57,7 @@ export class TaskService {
       )
       }
 
+      update(task: Task): Observable <Task> {
+        return this.http.patch<Task>(`${environment.fbDbUrl}/posts/${task.id}.json`, task)
+    }
 }
