@@ -1,0 +1,14 @@
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.invalid {
+    input {
+        border-color: red;
+        box-shadow: 0 0 3px 3px red;
+    }
+}

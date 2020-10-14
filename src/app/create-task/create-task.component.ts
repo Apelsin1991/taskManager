@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Task } from '../shared/interface';
 import { TaskService } from '../shared/task.service';
@@ -14,16 +15,22 @@ export class CreateTaskComponent implements OnInit {
 
   edit = false
   form: FormGroup
+  isEdit: Boolean
 
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
     private router: Router) {}
     task: Task
+    post$: Observable<any>
 
   ngOnInit(): void {
+
+    this.route.queryParams.subscribe((params: Params)=> {
+      this.isEdit = !!params.edit
+    })
     this.edit = false
-    if(this.route.params.value['id']) {
+    if(this.isEdit) {
       console.log(this.route.params)
       this.edit = true
       this.route.params.pipe(

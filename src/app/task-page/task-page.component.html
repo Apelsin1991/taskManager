@@ -21,7 +21,8 @@
     </div>
     <p class="edit" data-toggle="tooltip"
     data-placement="bottom" title="Редактировать"
-    [routerLink]="['/create', task.id]">Ред</p>
+    [routerLink]="['/create', task.id]"
+    [queryParams]='{edit: true}'>Ред</p>
   </div>
 
 </div>
