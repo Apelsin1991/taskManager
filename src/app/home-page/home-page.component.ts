@@ -16,19 +16,37 @@ export class HomePageComponent implements OnInit, OnDestroy {
   rSub: Subscription
   search = ''
 
-  drop(event: CdkDragDrop<Task[]>) {
-    moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
-    }
-  
-
   constructor(private taskService: TaskService) { }
 
   ngOnInit(): void {
     this.tSub = this.taskService.getAll()
-      .subscribe(task => {
-        this.tasks = task
+      .subscribe(tasks => {
+        this.tasks = tasks
+        this.tasks.forEach((item, inx) => {
+          item.order = inx + 1
+        })        
       })
+      this.tasks.sort((a, b) => {return a.order - b.order})
+      // setInterval(()=> {console.log(this.tasks[0])}, 4000)
   }
+
+  deadline(str: string) {
+    if (new Date(str) > new Date) {
+      return 'red'
+    } else if (Date.now() - Date.parse(str)  < 259200000) {
+      return 'pink'
+    }        
+  }
+
+  drop(event: CdkDragDrop<Task[]>) {
+    moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
+    this.tasks.forEach((task, inx) => {
+      if(task.order !== 0) {
+        task.order = inx + 1;
+      }
+    })
+    }
+    
 
   remove(id: string) {
     this.rSub = this.taskService.deletePost(id)
@@ -36,6 +54,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.tasks = this.tasks.filter(post => post.id !== id)
       })
   }
+
 
   ngOnDestroy() {
     if (this.tSub) {
@@ -45,7 +64,14 @@ export class HomePageComponent implements OnInit, OnDestroy {
     if (this.rSub) {
       this.rSub.unsubscribe()
     }
+
+    // не работает
+    if (this.tasks) {
+      this.tasks.forEach((task) => {
+        this.taskService.update(task)
+      })
+    }
   }
-  
+
 
 }

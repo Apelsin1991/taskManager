@@ -3,6 +3,7 @@ export interface Task {
     text: string
     date: string
     id?: string
+    order?: number
 }
 
 export interface FbCreateResponse {

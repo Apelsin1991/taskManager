@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Task } from '../shared/interface';
 import { TaskService } from '../shared/task.service';
@@ -17,12 +17,14 @@ export class CreateTaskComponent implements OnInit {
 
   constructor(
     private taskService: TaskService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private router: Router) {}
     task: Task
 
   ngOnInit(): void {
     this.edit = false
     if(this.route.params.value['id']) {
+      console.log(this.route.params)
       this.edit = true
       this.route.params.pipe(
         switchMap((params: Params) => {
@@ -68,6 +70,8 @@ export class CreateTaskComponent implements OnInit {
       this.form.reset()
       
     })
+
+    this.router.navigate([''])
 
   }
 

@@ -1,7 +1,10 @@
 <div class="container" *ngIf="post$ | async as task; else loading">
 
   <div class="card">
-    <p class="close" (click)="remove(task.id)">&#x2718;</p>
+    <p id="close" (click)="remove(task.id)"
+    data-toggle="tooltip"
+    data-placement="bottom" 
+    title="Удалить">&#x2718;</p>
     <div class="card-header">
       {{task.title}}
     </div>
@@ -16,11 +19,9 @@
         <a href="#" class="btn btn-success" [routerLink]="['task', task.id]">Завершить</a>
       </div>
     </div>
-    <p class="edit" data-toggle="tooltip" 
+    <p class="edit" data-toggle="tooltip"
     data-placement="bottom" title="Редактировать"
-    
-    
-    >&#9998;</p>
+    [routerLink]="['/create', task.id]">Ред</p>
   </div>
 
 </div>
