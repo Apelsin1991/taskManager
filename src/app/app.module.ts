@@ -11,14 +11,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PostsSearch } from './shared/search.pipe';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { LoginPageComponent } from './login-page/login-page.component';
-import { AuthInterceptor } from './shared/auth.interceptor';
+import { EditPageComponent } from './edit-page/edit-page.component';
 
-const INTERCEPTOR_PROVIDER: Provider = {
-  provide: HTTP_INTERCEPTORS,
-  multi: true,
-  useClass: AuthInterceptor
-}
+
 
 @NgModule({
   declarations: [
@@ -28,7 +23,7 @@ const INTERCEPTOR_PROVIDER: Provider = {
     TaskPageComponent,
     CreateTaskComponent,
     PostsSearch,
-    LoginPageComponent
+    EditPageComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +33,7 @@ const INTERCEPTOR_PROVIDER: Provider = {
     HttpClientModule,
     DragDropModule
   ],
-  providers: [INTERCEPTOR_PROVIDER],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,23 +1,24 @@
+<div *ngIf="form; else loading">
 <div class="container">
   <div>
-    <form [formGroup]='form' (ngSubmit)='submit()'>
-      <div [ngClass]='{invalid: form.get("title").touched && form.get("title").invalid}'>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div [ngClass]="{invalid: form.get('title').touched && form.get('title').invalid}">
 
         <label for="title">Заголовок задачи</label>
         <input id="title" type="text" formControlName="title">
 
-        <div *ngIf='form.get("title").touched && form.get("title").invalid' class="validation">
-          <small *ngIf='form.get("title").errors.required'>Введите название задачи</small>
+        <div *ngIf="form.get('title').touched && form.get('title').invalid" class="validation">
+          <small *ngIf="form.get('title').errors.required">Введите название задачи</small>
         </div>
 
       </div>
-      <div [ngClass]='{invalid: form.get("text").touched && form.get("text").invalid}'>
+      <div [ngClass]="{invalid: form.get('text').touched && form.get('text').invalid}">
 
         <label for="text">Текст задачи</label>
         <p><textarea rows="10" cols="45" id="text" formControlName="text"></textarea></p>
 
-        <div *ngIf='form.get("text").touched && form.get("text").invalid' class="validation">
-          <small *ngIf='form.get("text").errors.required'>Введите текст задачи</small>
+        <div *ngIf="form.get('text').touched && form.get('text').invalid" class="validation">
+          <small *ngIf="form.get('text').errors.required">Введите текст задачи</small>
         </div>
 
         <div>
@@ -35,3 +36,11 @@
     </form>
   </div>
 </div>
+</div>
+<ng-template #loading>
+  загрузка...
+</ng-template>
+
+
+
+

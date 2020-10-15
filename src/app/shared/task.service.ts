@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { Task, FbCreateResponse } from './interface';
+import { Task } from './interface';
 
 @Injectable({
     providedIn: 'root'
@@ -12,52 +10,32 @@ export class TaskService {
     constructor(private http: HttpClient) {}
 
     create(task: Task): Observable < Task > {
-        return this.http.post(`${environment.fbDbUrl}/posts.json`, task)
-            .pipe(
-                map((response: FbCreateResponse) => {
-                    return {
-                        ...task,
-                        id: response.name
-                    }
-                })
-            )
+        return this.http.post < Task > (`http://localhost:3004/tasks`, task)
     }
 
     getAll(): Observable<Task[]> {
-        return this.http.get(`${environment.fbDbUrl}/posts.json`)
-        .pipe(
-            map((response: {[key: string]: any}) => {
-                console.log('oninit' ,response)
-                return Object
-                .keys(response)
-                .map( key => ({
-                    ...response[key],
-                    id: key,
-                    date: new Date(response[key].date)
-                }))
-            })
-        )
+        return this.http.get < Task[] > (`http://localhost:3004/tasks`)
+
     }
 
     deletePost(id: string): Observable <void> {
-        return this.http.delete<void>(`${environment.fbDbUrl}/posts/${id}.json`)
+        return this.http.delete < void > (`http://localhost:3004/tasks/${id}`)
          
     }
 
     getById(id: string): Observable<Task>{
         
-        return  this.http.get(`${environment.fbDbUrl}/posts/${id}.json`)
-        .pipe(
-          map((post: Task) => {
-              return {
-                  ...post,
-                  id: id,
-              }
-          })
-      )
+        return  this.http.get < Task > (`http://localhost:3004/tasks/${id}`)    
+    }
+
+    update(task: Task): Observable<Task> {
+        return this.http.patch < Task > (`http://localhost:3004/tasks/${task.id}`, task)
+    }
+
+    completeTask(id: number): Observable <Task> {
+        return this.http.patch <Task> (`http://localhost:3004/tasks/${id}`, {
+          completed: true}, 
+          {responseType: 'json'})
       }
 
-      update(task: Task): Observable <Task> {
-        return this.http.patch<Task>(`${environment.fbDbUrl}/posts/${task.id}.json`, task)
-    }
 }
