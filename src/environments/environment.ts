@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  apiKey: 'AIzaSyBT7l_VAEwY9rZGutR8KxbKut5lAkObquQ',
-  fbDbUrl: 'https://angular-blog-fcf20.firebaseio.com/'
+  jsonURL: 'http://localhost:3000'
 };
 
 /*

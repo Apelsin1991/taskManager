@@ -1,43 +1,40 @@
-input {
-  width: 500px;
+.dropContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 800px;
 }
 
-.dropContainer {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-  }
-  
 .task-box {
-    border: 1px solid #92d1cb;
-    border-radius: 10px;
-    width: 500px;
-    height: 200px;
-    margin: 20px;
-    padding: 10px;
-    text-align: center;
-    background: #d5eae8;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  }
+  border: 1px solid #92d1cb;
+  border-radius: 10px;
+  width: 100%;
+  height: 200px;
+  margin: 20px;
+  padding: 10px;
+  text-align: center;
+  background: #d5eae8;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
 
-  .hat-container {
-    margin-bottom: 10px;
-  }
+.hat-container {
+  margin: 10px auto;
+}
 
-  .btns {
-      button {
-          margin-left: 10px;
-      }
+.btns {
+  button {
+    margin-left: 10px;
   }
+}
 
-  #datePlace {
-      border-radius: 50px;
-      padding: 7px;
-      //box-shadow: 0 0 3px 3px red;
-      margin: 7px auto;
-  }
+.datePlace {
+  border-radius: 50px;
+  padding: 7px;
+  margin: 7px auto;
+}
 
-  .completed {
-    text-decoration: line-through;
-  }
+.search {
+  margin-top: 70px;
+  width: 100%;
+  margin-left: 18px;
+}

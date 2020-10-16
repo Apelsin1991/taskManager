@@ -12,16 +12,17 @@ import { TaskService } from '../shared/task.service';
 export class HomePageComponent implements OnInit, OnDestroy {
 
   tasks: Task[] = []
-  tSub: Subscription
-  rSub: Subscription
+  gSub: Subscription
+  dSub: Subscription
+  cSub: Subscription
+  uSub: Subscription
   search = ''
   poster: any
 
   constructor(private taskService: TaskService) { }
 
   ngOnInit(): void {   
-
-      this.tSub = this.taskService.getAll()
+      this.gSub = this.taskService.getAll()
       .subscribe((response) => {
           this.tasks = response
           this.tasks.sort((a, b) => {return a.order - b.order})          
@@ -29,22 +30,16 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   deadline(str: string) {
-    if (new Date(str) > new Date()) {
+    const actDate: number = (new Date).getTime() 
+    const clientDate: number = new Date(str).getTime()
+    if (clientDate < actDate) {
       return 'red'
-    } else if (Date.now() - Date.parse(str)  < 259200000) {
+    } else if (clientDate - actDate < 259200000) {
       return 'pink'
-    }        
+    } else  if (actDate - clientDate  < 259200000) {
+      return 'null'
+    }       
   }
-
-  // deadline(str: string) {
-    // if ( Date.parse(str) < Date.parse(Date())) {
-      // console.log(true)
-      // return 'red'
-    // } else if (Date.parse(Date()) - Date.parse(str)  < 259200000) {
-      // console.log(false)
-      // return 'pink'
-    // }        
-  // }
 
   drop(event: CdkDragDrop<Task[]>) {
     moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
@@ -55,33 +50,41 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
     )  
     this.tasks.forEach((item) => {
-      this.taskService.update(item)
+      this.uSub = this.taskService.update(item)
       .subscribe()
     })  
   }
 
   remove(id: string) {
-    this.rSub = this.taskService.deletePost(id)
+    this.dSub = this.taskService.deletePost(id)
       .subscribe(() => {
         this.tasks = this.tasks.filter(post => post.id !== id)
       })
   }
 
   completeTask(id: number) {
-    this.taskService.completeTask(id)
+    this.cSub = this.taskService.completeTask(id)
       .subscribe((task) => {
         this.tasks.find(t => t.id === task.id).completed = true
       })
   }
 
 
-  ngOnDestroy() {
-    if (this.tSub) {
-      this.tSub.unsubscribe()
+  ngOnDestroy(): void {
+    if (this.gSub) {
+      this.gSub.unsubscribe()
     }
 
-    if (this.rSub) {
-      this.rSub.unsubscribe()
+    if (this.dSub) {
+      this.dSub.unsubscribe()
+    }    
+
+    if (this.cSub) {
+      this.cSub.unsubscribe()
+    }    
+
+    if (this.uSub) {
+      this.uSub.unsubscribe()
     }    
   }
   

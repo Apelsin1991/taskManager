@@ -1,7 +1,7 @@
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light bg-light fixed-top">
 
   <a class="navbar-brand" routerLink="/">TaskManager</a>
-  
+
   <ul class="nav justify-content-end">
     <li class="nav-item">
       <a class="nav-link active" [routerLink]="['', 'create']">Создать</a>
@@ -9,4 +9,5 @@
   </ul>
 
 </nav>
+
 <router-outlet></router-outlet>

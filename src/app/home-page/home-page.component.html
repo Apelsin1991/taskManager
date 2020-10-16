@@ -1,7 +1,7 @@
-<div class="parent-container" *ngIf="tasks.length; else empty">
-  <div *ngIf='tasks.length; else loading'>
-    <div class="form-control">
-      <input type="text" placeholder="Найти пост..." [(ngModel)]='search'>
+<div class="d-flex justify-content-center">
+  <div *ngIf='tasks.length; else noTasks'>
+    <div>
+      <input class="search" type="text" placeholder="Найти пост..." [(ngModel)]='search'>
     </div>
 
     <div cdkDropList (cdkDropListDropped)="drop($event)" class="dropContainer">
@@ -11,33 +11,24 @@
         <div class="hat-container">
           <a [ngStyle]="{
             background: deadline(task.date)
-          }"            
-           id="datePlace"> Выполнить до {{ task.date | date: 'shortDate'}}</a>
+          }" id="datePlace"> Выполнить до {{ task.date | date: 'shortDate' }}</a>
           <a class="close" (click)="remove(task.id)">&#x2718;</a>
         </div>
         <h5 class="card-title">{{ task.title | slice:0:23}}</h5>
         <p class="card-text">{{ task.text | slice:0:40}}</p>
 
         <div class="btns">
-          <a href="#" class="btn btn-primary" [routerLink]="['task', task.id]">Открыть</a>
+          <button href="#" class="btn btn-primary" [routerLink]="['task', task.id]">Открыть</button>
           <button href="#" class="btn btn-success" [disabled]="task.completed"
             (click)='completeTask(task.id)'>Завершить</button>
         </div>
-
-        <div>
-
-        </div>
-
       </div>
     </div>
   </div>
+</div>
 
-  <div>
-    <ng-template #loading>
-      <p class="text-center">Загрузка</p>
-    </ng-template>
-  </div>
-
-  <ng-template #empty>
-    <p>Здесь будут отображаться ваши задачи</p>
+<div>
+  <ng-template #noTasks>
+    <p class="text-center">Здесь будут отображаться ваши задачи</p>
   </ng-template>
+</div>

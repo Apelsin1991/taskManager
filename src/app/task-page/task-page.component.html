@@ -1,31 +1,30 @@
 <div class="container" *ngIf="post$ | async as task; else loading">
 
-  <div class="card">
-    <p id="close" (click)="remove(task.id)"
-    data-toggle="tooltip"
-    data-placement="bottom" 
-    title="Удалить">&#x2718;</p>
-    <div class="card-header">
-      {{task.title}}
-    </div>
-    <div class="card-body">
-      <blockquote class="blockquote mb-0">
-        <p>{{ task.text }}</p>
-        <footer class="blockquote-footer">Необходимо выполнить до <cite title="Source Title">{{task.date}}</cite>
-        </footer>
-      </blockquote>
-      <div class="buttons">
-        <a href="#" class="btn btn-primary" [routerLink]="['']">Назад</a>
-        <a href="#" class="btn btn-success" [routerLink]="['task', task.id]">Завершить</a>
-      </div>
-    </div>
-    <p class="edit" data-toggle="tooltip"
-    data-placement="bottom" title="Редактировать"
-    [routerLink]="['/edit', task.id]"
-    [queryParams]='{edit: true}'>Ред</p>
+  <div>
+    <a class="task-title"> <b>{{task.title}}</b> </a>
+    <a class="close" (click)="remove(task.id)" 
+       data-toggle="tooltip" data-placement="bottom"
+       title="Удалить">&#x2718;</a>
   </div>
 
+  <div class="card-body">
+    
+    <blockquote class="blockquote mb-0">
+      <p>{{ task.text }}</p>
+      <footer class="blockquote-footer">Необходимо выполнить до <cite title="Source Title">{{task.date}}</cite></footer>
+    </blockquote>
+
+    <div class="buttons float-right">
+      <a class="btn btn-primary" [routerLink]="['']">Назад</a>
+      <a class="btn btn-success" (click)='completeTask(task.id)'>Завершить</a>
+    </div>
+
+  </div>
+
+  <p class="edit" data-toggle="tooltip" data-placement="bottom" title="Редактировать" [routerLink]="['/edit', task.id]"><b>Ред</b></p>
+
 </div>
+
 <ng-template #loading>
   <p>Загрузка</p>
 </ng-template>

@@ -14,6 +14,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
 
   post$: Observable<Task>
   rSub: Subscription
+  cSub: Subscription
 
   constructor(
     private route: ActivatedRoute, 
@@ -23,7 +24,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.post$ = this.route.params.pipe(
       switchMap((param: Params) => {
-       return this.taskService.getById(param['id']) 
+       return  this.taskService.getById(param['id']) 
       })
     )
   }
@@ -35,11 +36,20 @@ export class TaskPageComponent implements OnInit, OnDestroy {
       })
   }
 
+  completeTask(id: number) {
+    this.cSub = this.taskService.completeTask(id)
+      .subscribe(() => {
+        this.router.navigate([''])
+      })
+  }
+
   ngOnDestroy() {
     if (this.rSub) {
       this.rSub.unsubscribe()
     }
-    
-  }
 
+    if (this.cSub) {
+      this.cSub.unsubscribe()
+    }    
+  }
 }

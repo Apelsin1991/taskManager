@@ -1,5 +1,6 @@
 import {
   Component,
+  OnDestroy,
   OnInit
 } from '@angular/core';
 
@@ -16,7 +17,7 @@ import {
 } from '@angular/router';
 
 import {
-  Observable
+  Observable, Subscription
 } from 'rxjs';
 
 import {
@@ -36,10 +37,11 @@ import {
   templateUrl: './edit-page.component.html',
   styleUrls: ['./edit-page.component.scss']
 })
-export class EditPageComponent implements OnInit {
+export class EditPageComponent implements OnInit, OnDestroy {
 
   form: FormGroup
   task: Task
+  uSub: Subscription
 
   constructor(
     private taskService: TaskService,
@@ -64,19 +66,22 @@ export class EditPageComponent implements OnInit {
     } 
 
     submit() {
-
-    this.taskService.update({
-      id: this.task.id,
-      text: this.form.value.text,
-      title: this.form.value.title,
-      date: this.form.value.date
-    })
-    .subscribe((re) => {
-      console.log(re)
-      this.form.reset()
-      this.router.navigate([''])
+      this.taskService.update({
+        id: this.task.id,
+        text: this.form.value.text,
+        title: this.form.value.title,
+        date: this.form.value.date
+      })
+      .subscribe(() => {
+        this.form.reset()
+        this.router.navigate([''])
+      })
     }
-    )
-  }
+
+    ngOnDestroy(): void {
+      if (this.uSub) {
+        this.uSub.unsubscribe()
+      }    
+    }
 
 }
