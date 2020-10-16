@@ -7,12 +7,12 @@ import { Task } from 'src/app/shared/interface';
 })
 export class PostsSearch implements PipeTransform {
 
-    transform(tasks: Task[], search = "") {
-        if(!search.trim()) {
-            return tasks
-        } 
-        return tasks.filter((post)=> {
-            return post.title.toLowerCase().includes(search.toLowerCase())
-        })
+    transform(tasks: Task[], search = ''): Task[] {
+        if (!search.trim()) {
+            return tasks;
+        }
+        return tasks.filter((post) => {
+            return post.title.toLowerCase().includes(search.toLowerCase());
+        });
     }
 }

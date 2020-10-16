@@ -1,5 +1,5 @@
   <app-alert></app-alert>
-  
+
   <div class="container">
     <form [formGroup]="form" (ngSubmit)="submit()">
       <div [ngClass]="{invalid: form.get('title').touched && form.get('title').invalid}">
@@ -23,16 +23,19 @@
           <small *ngIf="form.get('text').errors.required">Введите текст задачи</small>
         </div>
 
-        <div>
-          <input type="date" formControlName="date">
-          <div *ngIf="form.get('date').touched && form.get('date').invalid" class="validation">
-            <small *ngIf="form.get('date').errors.required">Укажите дату</small>
-          </div>
+      </div>
+
+      <div [ngClass]="{invalid: form.get('date').touched && form.get('date').invalid}">
+
+        <input type="date" formControlName="date">
+
+        <div *ngIf="form.get('date').touched && form.get('date').invalid" class="validation">
+          <small *ngIf="form.get('date').errors.required">Укажите дату</small>
         </div>
 
-        <button class="btn btn-secondary" type="submit" [disabled]="form.invalid">Отправить</button>
-
       </div>
+
+      <button class="btn btn-secondary" type="submit" [disabled]="form.invalid">Отправить</button>
 
     </form>
   </div>

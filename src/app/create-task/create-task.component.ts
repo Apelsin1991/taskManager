@@ -13,43 +13,43 @@ import { TaskService } from '../shared/task.service';
 })
 export class CreateTaskComponent implements OnInit, OnDestroy {
 
-  form: FormGroup
-  task: Task
-  cSub: Subscription
+  form: FormGroup;
+  task: Task;
+  cSub: Subscription;
 
   constructor(
     private taskService: TaskService,
     private router: Router,
     private alert: AlertService) {}
-        
+
   ngOnInit(): void {
     this.form = new FormGroup ({
       title: new FormControl(null, Validators.required),
       text: new FormControl(null, Validators.required),
       date: new FormControl(null, Validators.required),
-    })
+    });
   }
-  
-  submit() {
-    this.alert.success('Задача была создана')
+
+  submit(): void {
+    this.alert.success('Задача была создана');
 
     this.task = {
       id: this.form.value.id,
       text: this.form.value.text,
       title: this.form.value.title,
       date: this.form.value.date
-    }
+    };
 
     this.cSub = this.taskService.create(this.task)
     .subscribe(() => {
-      this.form.reset()
-      this.router.navigate([''])
-    })
+      this.form.reset();
+      this.router.navigate(['']);
+    });
   }
 
   ngOnDestroy(): void {
-    if(this.cSub) {
-      this.cSub.unsubscribe()
+    if (this.cSub) {
+      this.cSub.unsubscribe();
     }
   }
 }

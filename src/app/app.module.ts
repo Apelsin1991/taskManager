@@ -14,6 +14,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditPageComponent } from './edit-page/edit-page.component';
 import { AlertComponent } from './shared/alert/alert.component';
 import { AlertService } from './shared/alert.servise';
+import { ErrorComponent } from './error/error.component';
 
 
 
@@ -26,7 +27,8 @@ import { AlertService } from './shared/alert.servise';
     CreateTaskComponent,
     PostsSearch,
     EditPageComponent,
-    AlertComponent
+    AlertComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

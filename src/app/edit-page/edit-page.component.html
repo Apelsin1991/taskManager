@@ -1,36 +1,42 @@
-<div *ngIf="form; else loading"  class="container">
+<div *ngIf="form; else loading" class="container">
   <app-alert></app-alert>
-<div>
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <div [ngClass]="{invalid: form.get('title').touched && form.get('title').invalid}">
+  <div>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div [ngClass]="{invalid: form.get('title').touched && form.get('title').invalid}">
 
-      <label class="task-title" for="title"><b>Заголовок задачи</b></label>
-      <input id="title" type="text" formControlName="title">
+        <label class="task-title" for="title"><b>Заголовок задачи</b></label>
+        <input id="title" type="text" formControlName="title">
 
-      <div *ngIf="form.get('title').touched && form.get('title').invalid" class="validation">
-        <small *ngIf="form.get('title').errors.required">Введите название задачи</small>
+        <div *ngIf="form.get('title').touched && form.get('title').invalid" class="validation">
+          <small *ngIf="form.get('title').errors.required">Введите название задачи</small>
+        </div>
+
+      </div>
+      <div [ngClass]="{invalid: form.get('text').touched && form.get('text').invalid}">
+
+        <label for="text"><b>Текст задачи</b></label>
+        <p><textarea rows="10" cols="45" id="text" formControlName="text"></textarea></p>
+
+        <div *ngIf="form.get('text').touched && form.get('text').invalid" class="validation">
+          <small *ngIf='form.get("text").errors.required'>Введите текст задачи</small>
+        </div>
+        
       </div>
 
-    </div>
-    <div [ngClass]="{invalid: form.get('text').touched && form.get('text').invalid}">
+      <div [ngClass]="{invalid: form.get('date').touched && form.get('date').invalid}">
 
-      <label for="text"><b>Текст задачи</b></label>
-      <p><textarea rows="10" cols="45" id="text" formControlName="text"></textarea></p>
-
-      <div *ngIf="form.get('text').touched && form.get('text').invalid" class="validation">
-        <small *ngIf='form.get("text").errors.required'>Введите текст задачи</small>
-      </div>
-
-      <div>
         <input type="date" formControlName="date">
+
+        <div *ngIf="form.get('date').touched && form.get('date').invalid" class="validation">
+          <small *ngIf="form.get('date').errors.required">Укажите дату</small>
+        </div>
+
       </div>
 
       <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Изменить</button>
 
-    </div>
-
-  </form>
-</div>
+    </form>
+  </div>
 </div>
 
 <ng-template #loading>

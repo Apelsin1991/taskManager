@@ -13,13 +13,13 @@ import { TaskService } from '../shared/task.service';
 })
 export class TaskPageComponent implements OnInit, OnDestroy {
 
-  post$: Observable<Task>
-  rSub: Subscription
-  cSub: Subscription
-  completed = false
+  post$: Observable<Task>;
+  rSub: Subscription;
+  cSub: Subscription;
+  completed = false;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private taskService: TaskService,
     private router: Router,
     private alert: AlertService) { }
@@ -27,35 +27,35 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.post$ = this.route.params.pipe(
       switchMap((param: Params) => {
-       return  this.taskService.getById(param['id']) 
+       return  this.taskService.getById(param.id);
       })
-    )
+    );
   }
 
-  remove(id: string) {
-    this.alert.warning('Задача была удалена')
+  remove(id: string): void {
+    this.alert.warning('Задача была удалена');
     this.rSub = this.taskService.deletePost(id)
       .subscribe(() => {
-        this.router.navigate([''])
-      })
+        this.router.navigate(['']);
+      });
   }
 
-  completeTask(id: number) {
-    this.alert.danger('Задача завершена')
+  completeTask(id: number): void {
+    this.alert.danger('Задача завершена');
     this.cSub = this.taskService.completeTask(id)
       .subscribe(() => {
-        this.router.navigate([''])
-      })
-    this.completed = true
+        this.router.navigate(['']);
+      });
+    this.completed = true;
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.rSub) {
-      this.rSub.unsubscribe()
+      this.rSub.unsubscribe();
     }
 
     if (this.cSub) {
-      this.cSub.unsubscribe()
-    }    
+      this.cSub.unsubscribe();
+    }
   }
 }

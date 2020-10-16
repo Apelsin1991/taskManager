@@ -1,24 +1,7 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-
-import {
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
-
-import {
-  ActivatedRoute,
-  Params,
-  Router
-} from '@angular/router';
-
-import {
-  Observable, Subscription
-} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import {
   switchMap
@@ -40,35 +23,34 @@ import {
 })
 export class EditPageComponent implements OnInit, OnDestroy {
 
-  form: FormGroup
-  task: Task
-  uSub: Subscription
+  form: FormGroup;
+  task: Task;
+  uSub: Subscription;
 
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
     private router: Router,
     private alert: AlertService) {}
-  
 
     ngOnInit(): void {
 
       this.route.params.pipe(
         switchMap((params: Params) => {
-          return this.taskService.getById(params['id'])
+          return this.taskService.getById(params.id);
         })
-      ).subscribe((task: Task) => {
-        this.task = task
+              ).subscribe((task: Task) => {
+        this.task = task;
         this.form = new FormGroup({
           title: new FormControl(task.title, Validators.required),
           text: new FormControl(task.text, Validators.required),
           date: new FormControl(task.date, Validators.required)
-        })
-      })
-    } 
+        });
+      });
+    }
 
-    submit() {
-      this.alert.success('Задача была изменена')
+    submit(): void {
+      this.alert.success('Задача была изменена');
 
       this.taskService.update({
         id: this.task.id,
@@ -77,15 +59,15 @@ export class EditPageComponent implements OnInit, OnDestroy {
         date: this.form.value.date
       })
       .subscribe(() => {
-        this.form.reset()
-        this.router.navigate([''])
-      })
+        this.form.reset();
+        this.router.navigate(['']);
+      });
     }
 
     ngOnDestroy(): void {
       if (this.uSub) {
-        this.uSub.unsubscribe()
-      }    
+        this.uSub.unsubscribe();
+      }
     }
 
 }
