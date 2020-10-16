@@ -1,3 +1,4 @@
+<app-alert></app-alert>
 <div class="container" *ngIf="post$ | async as task; else loading">
 
   <div>
@@ -10,13 +11,13 @@
   <div class="card-body">
     
     <blockquote class="blockquote mb-0">
-      <p>{{ task.text }}</p>
+      <p [class.completed]="completed || task.completed">{{ task.text }}</p>
       <footer class="blockquote-footer">Необходимо выполнить до <cite title="Source Title">{{task.date}}</cite></footer>
     </blockquote>
 
     <div class="buttons float-right">
-      <a class="btn btn-primary" [routerLink]="['']">Назад</a>
-      <a class="btn btn-success" (click)='completeTask(task.id)'>Завершить</a>
+      <button class="btn btn-primary" [routerLink]="['']">Назад</button>
+      <button class="btn btn-success" [disabled]="task.completed" (click)='completeTask(task.id)'>Завершить</button>
     </div>
 
   </div>

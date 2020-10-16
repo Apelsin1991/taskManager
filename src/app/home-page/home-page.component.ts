@@ -1,6 +1,7 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AlertService } from '../shared/alert.servise';
 import { Task } from '../shared/interface';
 import { TaskService } from '../shared/task.service';
 
@@ -19,7 +20,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
   search = ''
   poster: any
 
-  constructor(private taskService: TaskService) { }
+  constructor(
+    private taskService: TaskService,
+    private alert: AlertService) { }
 
   ngOnInit(): void {   
       this.gSub = this.taskService.getAll()
@@ -56,6 +59,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   remove(id: string) {
+    this.alert.danger('Задача была удалена')
     this.dSub = this.taskService.deletePost(id)
       .subscribe(() => {
         this.tasks = this.tasks.filter(post => post.id !== id)
@@ -63,6 +67,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   completeTask(id: number) {
+    this.alert.warning('Задача завершена')
     this.cSub = this.taskService.completeTask(id)
       .subscribe((task) => {
         this.tasks.find(t => t.id === task.id).completed = true

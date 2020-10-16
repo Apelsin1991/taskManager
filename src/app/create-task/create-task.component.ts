@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AlertService } from '../shared/alert.servise';
 import { Task } from '../shared/interface';
 import { TaskService } from '../shared/task.service';
 
@@ -18,7 +19,8 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
 
   constructor(
     private taskService: TaskService,
-    private router: Router) {}
+    private router: Router,
+    private alert: AlertService) {}
         
   ngOnInit(): void {
     this.form = new FormGroup ({
@@ -29,6 +31,8 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
   }
   
   submit() {
+    this.alert.success('Задача была создана')
+
     this.task = {
       id: this.form.value.id,
       text: this.form.value.text,

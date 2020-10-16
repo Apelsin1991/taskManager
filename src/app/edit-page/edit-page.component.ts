@@ -23,6 +23,7 @@ import {
 import {
   switchMap
 } from 'rxjs/operators';
+import { AlertService } from '../shared/alert.servise';
 
 import {
   Task
@@ -46,7 +47,8 @@ export class EditPageComponent implements OnInit, OnDestroy {
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
-    private router: Router) {}
+    private router: Router,
+    private alert: AlertService) {}
   
 
     ngOnInit(): void {
@@ -66,6 +68,8 @@ export class EditPageComponent implements OnInit, OnDestroy {
     } 
 
     submit() {
+      this.alert.success('Задача была изменена')
+
       this.taskService.update({
         id: this.task.id,
         text: this.form.value.text,

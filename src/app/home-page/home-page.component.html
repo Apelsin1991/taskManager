@@ -4,6 +4,8 @@
       <input class="search" type="text" placeholder="Найти пост..." [(ngModel)]='search'>
     </div>
 
+    <app-alert></app-alert>
+
     <div cdkDropList (cdkDropListDropped)="drop($event)" class="dropContainer">
       <div class="task-box" *ngFor="let task of tasks | postsSearch: search; let idx = index"
         [class.completed]='task.completed' cdkDrag>
@@ -11,7 +13,7 @@
         <div class="hat-container">
           <a [ngStyle]="{
             background: deadline(task.date)
-          }" id="datePlace"> Выполнить до {{ task.date | date: 'shortDate' }}</a>
+          }" class="datePlace"> Выполнить до {{ task.date | date: 'shortDate' }}</a>
           <a class="close" (click)="remove(task.id)">&#x2718;</a>
         </div>
         <h5 class="card-title">{{ task.title | slice:0:23}}</h5>
@@ -29,6 +31,6 @@
 
 <div>
   <ng-template #noTasks>
-    <p class="text-center">Здесь будут отображаться ваши задачи</p>
+    <p>Здесь будут отображаться ваши задачи</p>
   </ng-template>
 </div>

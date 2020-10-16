@@ -85,3 +85,10 @@ textarea {
 .completed {
   text-decoration: line-through;
 }
+
+.alert-wrap {
+  position: fixed;
+  top: 50px;
+  right: 0px;
+  max-width: 200px;;
+}

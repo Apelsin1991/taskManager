@@ -12,6 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { PostsSearch } from './shared/search.pipe';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EditPageComponent } from './edit-page/edit-page.component';
+import { AlertComponent } from './shared/alert/alert.component';
+import { AlertService } from './shared/alert.servise';
 
 
 
@@ -23,7 +25,8 @@ import { EditPageComponent } from './edit-page/edit-page.component';
     TaskPageComponent,
     CreateTaskComponent,
     PostsSearch,
-    EditPageComponent
+    EditPageComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,7 @@ import { EditPageComponent } from './edit-page/edit-page.component';
     HttpClientModule,
     DragDropModule
   ],
-  providers: [],
+  providers: [AlertService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
