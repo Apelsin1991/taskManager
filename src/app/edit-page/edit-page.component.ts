@@ -1,20 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-
-import {
-  switchMap
-} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert.servise';
-
-import {
-  Task
-} from '../shared/interface';
-
-import {
-  TaskService
-} from '../shared/task.service';
+import { Task } from '../shared/interface';
+import { TaskService } from '../shared/task.service';
 
 @Component({
   selector: 'app-edit-page',
@@ -25,7 +16,7 @@ export class EditPageComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   task: Task;
-  uSub: Subscription;
+  unsubsciber$: Subject< void > = new Subject< void >();
 
   constructor(
     private taskService: TaskService,
@@ -36,6 +27,7 @@ export class EditPageComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
 
       this.route.params.pipe(
+        takeUntil(this.unsubsciber$),
         switchMap((params: Params) => {
           return this.taskService.getById(params.id);
         })
@@ -50,7 +42,6 @@ export class EditPageComponent implements OnInit, OnDestroy {
     }
 
     submit(): void {
-      this.alert.success('Задача была изменена');
 
       this.taskService.update({
         id: this.task.id,
@@ -58,16 +49,18 @@ export class EditPageComponent implements OnInit, OnDestroy {
         title: this.form.value.title,
         date: this.form.value.date
       })
+      .pipe(takeUntil(this.unsubsciber$))
       .subscribe(() => {
+        this.alert.success('Задача была изменена');
         this.form.reset();
         this.router.navigate(['']);
       });
     }
 
+
     ngOnDestroy(): void {
-      if (this.uSub) {
-        this.uSub.unsubscribe();
-      }
+      this.unsubsciber$.next();
+      this.unsubsciber$.complete();
     }
 
 }

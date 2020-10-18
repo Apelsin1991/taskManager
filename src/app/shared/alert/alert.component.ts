@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../alert.servise';
 
 
@@ -12,27 +13,27 @@ export class AlertComponent implements OnInit, OnDestroy {
 
   public text: string;
   public type = 'success';
+  unsubsciber$: Subject< void > = new Subject< void >()
 
   aSub: Subscription;
 
   constructor(private alertService: AlertService) { }
 
   ngOnInit(): void {
-    this.aSub = this.alertService.alert$.subscribe( alert => {
+    this.aSub = this.alertService.alert$
+    .pipe(takeUntil(this.unsubsciber$))
+    .subscribe( alert => {
       this.text = alert.text;
       this.type = alert.type;
-
-      const timeout = setTimeout(() => {
-        clearTimeout(timeout);
+      setTimeout(() => {
         this.text = '';
       }, 2000);
     });
   }
 
   ngOnDestroy(): void {
-    if (this.aSub) {
-      this.aSub.unsubscribe();
-    }
+    this.unsubsciber$.next();
+    this.unsubsciber$.complete();
   }
 
 }

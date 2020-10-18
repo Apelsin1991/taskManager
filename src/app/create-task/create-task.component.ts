@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert.servise';
 import { Task } from '../shared/interface';
 import { TaskService } from '../shared/task.service';
@@ -14,8 +15,7 @@ import { TaskService } from '../shared/task.service';
 export class CreateTaskComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
-  task: Task;
-  cSub: Subscription;
+  unsubsciber$: Subject< void > = new Subject< void >();
 
   constructor(
     private taskService: TaskService,
@@ -31,25 +31,20 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    this.alert.success('Задача была создана');
 
-    this.task = {
-      id: this.form.value.id,
-      text: this.form.value.text,
-      title: this.form.value.title,
-      date: this.form.value.date
-    };
+    const task: Task = this.form.value;
 
-    this.cSub = this.taskService.create(this.task)
+    this.taskService.create(task)
+    .pipe(takeUntil(this.unsubsciber$))
     .subscribe(() => {
+      this.alert.success('Задача была создана');
       this.form.reset();
       this.router.navigate(['']);
     });
   }
 
   ngOnDestroy(): void {
-    if (this.cSub) {
-      this.cSub.unsubscribe();
-    }
+    this.unsubsciber$.next();
+    this.unsubsciber$.complete();
   }
 }

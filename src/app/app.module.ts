@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import ruLocale from '@angular/common/locales/ru';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,7 +18,7 @@ import { AlertComponent } from './shared/alert/alert.component';
 import { AlertService } from './shared/alert.servise';
 import { ErrorComponent } from './error/error.component';
 
-
+registerLocaleData(ruLocale, 'ru');
 
 @NgModule({
   declarations: [

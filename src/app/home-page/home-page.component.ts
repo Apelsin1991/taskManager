@@ -1,6 +1,7 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert.servise';
 import { Task } from '../shared/interface';
 import { TaskService } from '../shared/task.service';
@@ -13,23 +14,27 @@ import { TaskService } from '../shared/task.service';
 export class HomePageComponent implements OnInit, OnDestroy {
 
   tasks: Task[] = [];
-  gSub: Subscription;
-  dSub: Subscription;
-  cSub: Subscription;
-  uSub: Subscription;
   search = '';
   poster: any;
+  error = '';
+  unsubsciber$: Subject< void > = new Subject< void >();
+  
+  
 
   constructor(
     private taskService: TaskService,
     private alert: AlertService) { }
 
   ngOnInit(): void {
-          this.gSub = this.taskService.getAll()
+      this.taskService.getAll()
+      .pipe(takeUntil(this.unsubsciber$))
       .subscribe((response) => {
           this.tasks = response;
           this.tasks.sort((a, b) => a.order - b.order);
-      });
+      },
+        error => {console.log(error.message)
+        this.error = error.message}
+      );
   }
 
   deadline(str: string): string {
@@ -54,43 +59,32 @@ export class HomePageComponent implements OnInit, OnDestroy {
     }
     );
     this.tasks.forEach((item) => {
-      this.uSub = this.taskService.update(item)
+      this.taskService.update(item)
+      .pipe(takeUntil(this.unsubsciber$))
       .subscribe();
     });
   }
 
   remove(id: string): void {
-    this.alert.danger('Задача была удалена');
-    this.dSub = this.taskService.deletePost(id)
+    this.taskService.deletePost(id)
+    .pipe(takeUntil(this.unsubsciber$))
       .subscribe(() => {
-        this.tasks = this.tasks.filter(post => post.id !== id);
+        this.alert.danger('Задача была удалена');
+        this.tasks = this.tasks.filter(post => post.id !== +id);
       });
   }
 
   completeTask(id: number): void {
-    this.alert.warning('Задача завершена');
-    this.cSub = this.taskService.completeTask(id)
+    this.taskService.completeTask(id)
+    .pipe(takeUntil(this.unsubsciber$))
       .subscribe((task) => {
+        this.alert.warning('Задача завершена');
         this.tasks.find(t => t.id === task.id).completed = true;
       });
   }
 
-
   ngOnDestroy(): void {
-    if (this.gSub) {
-      this.gSub.unsubscribe();
-    }
-
-    if (this.dSub) {
-      this.dSub.unsubscribe();
-    }
-
-    if (this.cSub) {
-      this.cSub.unsubscribe();
-    }
-
-    if (this.uSub) {
-      this.uSub.unsubscribe();
-    }
+    this.unsubsciber$.next();
+    this.unsubsciber$.complete();
   }
 }

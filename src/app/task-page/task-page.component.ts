@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert.servise';
 import { Task } from '../shared/interface';
 import { TaskService } from '../shared/task.service';
@@ -14,9 +14,8 @@ import { TaskService } from '../shared/task.service';
 export class TaskPageComponent implements OnInit, OnDestroy {
 
   post$: Observable<Task>;
-  rSub: Subscription;
-  cSub: Subscription;
   completed = false;
+  unsubsciber$: Subject< void > = new Subject< void >();
 
   constructor(
     private route: ActivatedRoute,
@@ -33,29 +32,26 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   }
 
   remove(id: string): void {
-    this.alert.warning('Задача была удалена');
-    this.rSub = this.taskService.deletePost(id)
+    this.taskService.deletePost(id)
+      .pipe(takeUntil(this.unsubsciber$))
       .subscribe(() => {
+        this.alert.warning('Задача была удалена');
         this.router.navigate(['']);
       });
   }
 
   completeTask(id: number): void {
-    this.alert.danger('Задача завершена');
-    this.cSub = this.taskService.completeTask(id)
+    this.taskService.completeTask(id)
+    .pipe(takeUntil(this.unsubsciber$))
       .subscribe(() => {
+        this.alert.danger('Задача завершена');
         this.router.navigate(['']);
       });
     this.completed = true;
   }
 
   ngOnDestroy(): void {
-    if (this.rSub) {
-      this.rSub.unsubscribe();
-    }
-
-    if (this.cSub) {
-      this.cSub.unsubscribe();
-    }
+    this.unsubsciber$.next();
+    this.unsubsciber$.complete();
   }
 }

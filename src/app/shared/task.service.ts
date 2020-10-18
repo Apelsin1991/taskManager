@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Task } from './interface';
 
@@ -15,7 +16,11 @@ export class TaskService {
     }
 
     getAll(): Observable<Task[]> {
-        return this.http.get < Task[] > (`${environment.jsonURL}/tasks`);
+        return this.http.get < Task[] > (`${environment.jsonURL}/tasks `)
+        .pipe(
+            catchError(error => {
+                return throwError(error)})
+        );
 
     }
 
