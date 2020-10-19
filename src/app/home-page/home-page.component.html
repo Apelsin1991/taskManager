@@ -1,38 +1,35 @@
 <div class="d-flex justify-content-center">
-  <p *ngIf='error; else tasksBlock' class="error">Ошибка: {{error}} <br>Перейдите по <a routerLink='' class="alert-link">ссылке</a> чтобы вернуться на главную страницу</p>
-  <ng-template #tasksBlock>
-    <div>
-      <div *ngIf='tasks.length; else noTasks'>
-        <div>
-          <input class="search" type="text" placeholder="Найти пост..." [(ngModel)]='search'>
-        </div>
+  <div>
+    <div *ngIf='tasks.length; else noTasks'>
+      <div>
+        <input class="search" type="text" placeholder="Найти пост..." [(ngModel)]='search'>
+      </div>
 
-        <div cdkDropList (cdkDropListDropped)="drop($event)" class="dropContainer">
-          <div class="task-box" *ngFor="let task of tasks | postsSearch: search; let idx = index"
-            [class.completed]='task.completed' cdkDrag>
+      <div cdkDropList (cdkDropListDropped)="drop($event)" class="dropContainer">
+        <div class="task-box" *ngFor="let task of tasks | postsSearch: search; let idx = index"
+          [class.completed]='task.completed' cdkDrag>
 
-            <div class="hat-container">
-              <a [ngStyle]="{
+          <div class="hat-container">
+            <a [ngStyle]="{
             background: deadline(task.date)
           }" class="datePlace"> Выполнить до {{ task.date | date: 'shortDate': null: 'ru' }}</a>
-              <a class="close" (click)="remove(task.id)">&#x2718;</a>
-            </div>
-            <h5 class="card-title">{{ task.title | slice:0:23}}</h5>
-            <p class="card-text">{{ task.text | slice:0:40}}</p>
-
-            <div class="btns">
-              <button href="#" class="btn btn-primary" [routerLink]="['task', task.id]">Открыть</button>
-              <button href="#" class="btn btn-success" [disabled]="task.completed"
-                (click)='completeTask(task.id)'>Завершить</button>
-            </div>
-
+            <a class="close" (click)="remove(task.id)">&#x2718;</a>
           </div>
+          <h5 class="card-title">{{ task.title | slice:0:23}}</h5>
+          <p class="card-text">{{ task.text | slice:0:40}}</p>
+
+          <div class="btns">
+            <button href="#" class="btn btn-primary" [routerLink]="['task', task.id]">Открыть</button>
+            <button href="#" class="btn btn-success" [disabled]="task.completed"
+              (click)='completeTask(task.id)'>Завершить</button>
+          </div>
+
         </div>
       </div>
     </div>
-  </ng-template>
+  </div>
 </div>
 
-  <ng-template #noTasks>
-    <p>Здесь будут отображаться ваши задачи</p>
-  </ng-template>
+<ng-template #noTasks>
+  <p>Здесь будут отображаться ваши задачи</p>
+</ng-template>

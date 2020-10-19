@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert.servise';
+import { ErrorService } from '../shared/error.service';
 import { Task } from '../shared/interface';
 import { TaskService } from '../shared/task.service';
 
@@ -22,7 +23,8 @@ export class EditPageComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     private route: ActivatedRoute,
     private router: Router,
-    private alert: AlertService) {}
+    private alert: AlertService,
+    private errorService: ErrorService) {}
 
     ngOnInit(): void {
 
@@ -44,17 +46,17 @@ export class EditPageComponent implements OnInit, OnDestroy {
     submit(): void {
 
       this.taskService.update({
-        id: this.task.id,
-        text: this.form.value.text,
-        title: this.form.value.title,
-        date: this.form.value.date
+        ...this.form.value,
+        id: this.task.id
       })
       .pipe(takeUntil(this.unsubsciber$))
       .subscribe(() => {
         this.alert.success('Задача была изменена');
         this.form.reset();
         this.router.navigate(['']);
-      });
+      },
+      error => {
+        this.errorService.doError(error.message)});
     }
 
 

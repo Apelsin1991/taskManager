@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert.servise';
+import { ErrorService } from '../shared/error.service';
 import { Task } from '../shared/interface';
 import { TaskService } from '../shared/task.service';
 
@@ -20,7 +21,8 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
   constructor(
     private taskService: TaskService,
     private router: Router,
-    private alert: AlertService) {}
+    private alert: AlertService,
+    private errorService: ErrorService) {}
 
   ngOnInit(): void {
     this.form = new FormGroup ({
@@ -40,7 +42,10 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
       this.alert.success('Задача была создана');
       this.form.reset();
       this.router.navigate(['']);
-    });
+    },
+      error => {
+      this.errorService.doError(error.message)}
+    );
   }
 
   ngOnDestroy(): void {

@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert.servise';
+import { ErrorService } from '../shared/error.service';
 import { Task } from '../shared/interface';
 import { TaskService } from '../shared/task.service';
 
@@ -15,15 +16,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   tasks: Task[] = [];
   search = '';
-  poster: any;
-  error = '';
   unsubsciber$: Subject< void > = new Subject< void >();
   
-  
-
   constructor(
     private taskService: TaskService,
-    private alert: AlertService) { }
+    private alert: AlertService,
+    private errorService: ErrorService) { }
 
   ngOnInit(): void {
       this.taskService.getAll()
@@ -32,8 +30,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
           this.tasks = response;
           this.tasks.sort((a, b) => a.order - b.order);
       },
-        error => {console.log(error.message)
-        this.error = error.message}
+        error => {this.errorService.doError(error.message)}
       );
   }
 
@@ -71,7 +68,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.alert.danger('Задача была удалена');
         this.tasks = this.tasks.filter(post => post.id !== +id);
-      });
+      },
+      error => {this.errorService.doError(error.message)});
   }
 
   completeTask(id: number): void {
@@ -80,7 +78,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
       .subscribe((task) => {
         this.alert.warning('Задача завершена');
         this.tasks.find(t => t.id === task.id).completed = true;
-      });
+      },
+      error => {this.errorService.doError(error.message)});
   }
 
   ngOnDestroy(): void {

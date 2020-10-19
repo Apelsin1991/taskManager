@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ErrorService } from '../error.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -7,8 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainLayoutComponent implements OnInit {
 
-  constructor() {}
+  errorText = '';
+
+  constructor(private servise: ErrorService) {}
 
   ngOnInit(): void {
+    this.servise.erText
+    .subscribe(errorMessage => {this.errorText = errorMessage})
+  }
+
+  clearError() {
+    this.errorText = ''
   }
 }
