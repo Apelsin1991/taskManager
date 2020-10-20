@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "all": "npm run dev | npm run ng serve"
+    "all": "npm run serv | npm run ng serve"
   },
   "private": true,
   "dependencies": {
